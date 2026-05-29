@@ -1,0 +1,85 @@
+task:
+  subject: "{subject}"
+  geography: "{geography}"
+  task_type: "{task_type}"
+  target_variable: "{target_variable}"
+  spatial_unit: "{spatial_unit}"
+
+split_summary:
+  spatial_holdout: "TBD"
+  temporal_holdout: "TBD"
+  random_split_used: false
+  leakage_checks_passed: false
+
+metrics:
+  regression:
+    mae:
+      threshold: null
+      current_score: null
+      gap: null
+      pass_fail: "TBD"
+      suspected_failure_source: null
+      recommended_upstream_fix: null
+    rmse:
+      threshold: null
+      current_score: null
+      gap: null
+      pass_fail: "TBD"
+      suspected_failure_source: null
+      recommended_upstream_fix: null
+    r2:
+      threshold: null
+      current_score: null
+      gap: null
+      pass_fail: "TBD"
+      suspected_failure_source: null
+      recommended_upstream_fix: null
+    bias:
+      threshold: null
+      current_score: null
+      gap: null
+      pass_fail: "TBD"
+      suspected_failure_source: null
+      recommended_upstream_fix: null
+    calibration:
+      threshold: null
+      current_score: null
+      gap: null
+      pass_fail: "TBD"
+      suspected_failure_source: null
+      recommended_upstream_fix: null
+    per_quintile_bias:
+      threshold_abs_max: null
+      Q1: null
+      Q2: null
+      Q3: null
+      Q4: null
+      Q5: null
+      pass_fail: "TBD"
+      suspected_failure_source: null
+      recommended_upstream_fix: null
+    predicted_range_discrimination:
+      threshold: null
+      current_score: null
+      gap: null
+      pass_fail: "TBD"
+      suspected_failure_source: null
+      recommended_upstream_fix: null
+    per_ecoregion_r2: {}
+    external_holdout_r2:
+      threshold: null
+      current_score: null
+      project_name: null
+      gap: null
+      pass_fail: "TBD"
+      suspected_failure_source: null
+      recommended_upstream_fix: null
+    error_by_region: {}
+    error_by_year: {}
+
+overall_decision:
+  target_met: false
+  benchmark_met: false
+  earliest_impacted_stage: null
+  rerun_boundary: null
+  notes: []

@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "agb_usa_biomass_regression_20260529",
+  "source_parquet": "/home/mattc/code/tf-deep-landcover/experiments/agb/usa_v1_pilot_joint_v2/features.parquet",
+  "tf_deep_landcover_sha": "e8c70584fb1a8705308004fbed123392c8f51654",
+  "n_rows_total": 4646,
+  "n_rows_modelled": 4636,
+  "rows_dropped_reason": "failure is non-null (e.g. 'emb:nodata_or_oob'); trainer keeps rows where failure.isna()",
+  "target_column": "target",
+  "target_meaning": "CO2 standing stock, tCO2/acre",
+  "target_range": [0.0, 521.0],
+  "id_columns": ["plot_id", "project_name"],
+  "cv_partition_key": "project_name",
+  "eco_join_key": ["project_name", "Plot_ID"],
+  "metadata_columns": ["plot_id", "project_name", "year", "lon", "lat", "target", "failure", "region"],
+  "model_feature_columns": {
+    "type": "olmoearth_aef_embedding",
+    "count": 64,
+    "names_pattern": "emb_00..emb_63",
+    "dtype": "float",
+    "scaling": "none (raw embeddings; LightGBM tree model)"
+  },
+  "years_pooled": [2022, 2023],
+  "regions": {"mw": 2631, "ne": 1407, "wv": 598}
+}

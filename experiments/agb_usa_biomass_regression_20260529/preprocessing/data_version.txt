@@ -1,0 +1,14 @@
+input_manifest_sha256: b0e490b7ceb5bd59acd5965fefbe705ffe6707ab140575c9f9c49709b6a7393d
+source_uri_list:
+  - /home/mattc/data-space/carbonmap-embeddings/training-data/anew_gt_with_eco_info.gpkg
+  - /home/mattc/code/tf-deep-landcover/experiments/agb/usa_v1_pilot_joint_v2/features.parquet
+  - /home/mattc/code/tf-deep-landcover/data/raw/locations/agb_usa_v1_pilot_wv.geojson
+  - /home/mattc/code/tf-deep-landcover/data/raw/locations/agb_usa_v1_pilot_midwest.geojson
+  - /home/mattc/code/tf-deep-landcover/data/raw/locations/agb_usa_v1_pilot_northeast.geojson
+snapshot_timestamp_utc: 2026-05-29T09:36:00Z
+label_source_revision: anew_gt_with_eco_info.gpkg (ANEW field plots, with eco_info)
+tf_deep_landcover_sha: e8c70584fb1a8705308004fbed123392c8f51654
+notes: |
+  iteration 0 reuses the prior joint_v2 features.parquet (no re-extraction). The SHA256 above
+  is the ANEW gpkg (label + ecoregion source). The features.parquet was produced by the sibling
+  extractor at tf_deep_landcover_sha e8c70584; this same SHA must appear in final/git_snapshot.txt.

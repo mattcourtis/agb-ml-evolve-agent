@@ -1,0 +1,2 @@
+crop-ml-agent-evolve: ea0551b8b7255dc1b1f3e645896638cce1d8e07b
+tf-deep-landcover:    e8c70584fb1a8705308004fbed123392c8f51654

@@ -1,0 +1,39 @@
+candidates:
+  - id: lightgbm_emb64
+    role: production
+    status: reproduction_target
+    library: lightgbm
+    entrypoint: "tf-deep-landcover :: src.agb.train_agb_lgbm"
+    invocation_note: >
+      Invoked via the cross-repo contract — never reimplemented. Hyperparameters are
+      hardcoded in the sibling trainer; changing them is a sibling-repo code edit (out of
+      scope for iteration 0).
+    features:
+      type: olmoearth_aef_embedding
+      count: 64
+      columns: "emb_00..emb_63"
+    hyperparameters:
+      num_leaves: 31
+      learning_rate: 0.05
+      n_estimators: 2000
+      early_stopping_rounds: 50
+    cv: "leave-one-project-out (project_name), 23 folds"
+
+  - id: ridge_pc20
+    role: simple_baseline
+    status: computed
+    library: scikit-learn
+    entrypoint: "models/compute_baselines.py"
+    pipeline: "StandardScaler -> PCA(20) -> Ridge(alpha=1.0)"
+    cv: "LeaveOneGroupOut (project_name)"
+
+  - id: mean_predictor
+    role: floor
+    status: computed
+    entrypoint: "models/compute_baselines.py"
+
+selection:
+  iteration_0_choice: lightgbm_emb64
+  rationale: >
+    Iteration 0 is a wiring validation; the candidate is fixed to the existing production
+    class to reproduce the joint_v2 baseline. No model search is performed this iteration.

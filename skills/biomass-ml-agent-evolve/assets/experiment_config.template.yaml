@@ -1,0 +1,90 @@
+experiment:
+  experiment_id: "{experiment_id}"
+  seed: 42
+  subject: "{subject}"
+  geography: "{geography}"
+  task_type: "{task_type}"
+  output_dir: "{output_dir}"
+
+task:
+  target_variable: "{target_variable}"
+  spatial_resolution: "{spatial_resolution}"
+  temporal_horizon: "{temporal_horizon}"
+  spatial_unit: "{spatial_unit}"
+  inference_unit: "{inference_unit}"
+
+data:
+  raw_sources: []
+  preferred_sources:
+    embeddings: []            # e.g., AlphaEarth Foundation (AEF), Presto, Clay
+    lidar: []                 # e.g., GEDI L2A RH metrics, GEDI L4A/B AGBD, NEON AOP, ICESat-2 ATL08
+    sar: []                   # e.g., ALOS PALSAR-2 mosaic, Sentinel-1 GRD
+    optical: []               # e.g., Sentinel-2 SR, Landsat 8/9, HLS
+    topography: []            # e.g., Copernicus DEM 30 m, SRTM v3
+    aux: []                   # e.g., Hansen GFC, NLCD, TerraClimate, CHIRPS
+    labels: []                # e.g., ANEW field plots, USFS FIA, NEON woody veg
+  database_uri: null
+  data_dir: null
+  gee:
+    enabled: true
+    cloud_project: "${GCP_PROJECT:-}"
+    service_account: "${EE_SERVICE_ACCOUNT:-}"
+    credentials_path: "${GOOGLE_APPLICATION_CREDENTIALS:-}"
+  huggingface:
+    enabled: true
+    repo_org_or_user: null
+    token_env: "HF_TOKEN"
+  aws:
+    enabled: true
+    profile: "${AWS_PROFILE:-}"
+    region: "${AWS_REGION:-us-west-2}"
+    s3_bucket: "${S3_BUCKET:-}"
+
+preprocessing:
+  cloud_masking: "n/a (annual embeddings already gap-filled)"
+  # Biomass uses annual composites, not crop-calendar windows. Train/test years
+  # must not overlap when years are pooled — see splits.temporal_holdout_rule.
+  temporal_alignment: "annual_composite"
+  resampling_policy: "task_specific"
+  normalization: "fit_on_train_only"
+  leakage_checks_required: true
+  data_versioning_required: true
+
+splits:
+  strategy: "spatial_holdout"
+  spatial_holdout_unit: "project_name"
+  temporal_holdout_rule: null
+  # For spatial_holdout strategy, validation_fraction / test_fraction are
+  # ignored — partition keys (e.g. project_name) govern the split. Kept for
+  # compatibility with other strategies (random / spatiotemporal).
+  validation_fraction: 0.2
+  test_fraction: 0.2
+
+models:
+  require_simple_baseline: true
+  baseline_candidates: []
+  advanced_candidates: []
+  ensemble_allowed: true
+
+training:
+  budget_tier: "Small"
+  max_full_iterations: 3
+  allow_extended_iterations: false
+  per_actor_retry_limit: 3
+  early_stopping: true
+  save_best_checkpoint: true
+  log_every_n_steps: 50
+
+evaluation:
+  metrics: []
+  thresholds: {}
+  benchmark_range: null
+
+finalisation:
+  save_model_card: true
+  save_data_card: true
+  save_environment_record: true
+  save_git_snapshot: true
+  push_to_huggingface: false
+  mirror_to_s3: false
+  export_gee_assets: false

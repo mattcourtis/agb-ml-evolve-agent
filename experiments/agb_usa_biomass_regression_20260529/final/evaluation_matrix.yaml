@@ -1,0 +1,113 @@
+task:
+  subject: "agb_usa"
+  geography: "CONUS forest joint v2 (WV+Midwest+NE)"
+  task_type: "biomass_regression"
+  target_variable: "CO2 (standing stock, tCO2/acre)"
+  spatial_unit: "1/24-acre circular field plot (~14.7 m radius)"
+
+split_summary:
+  spatial_holdout: "project_name leave-one-project-out (23 folds)"
+  temporal_holdout: "n/a (2022/2023 pooled; year not a model feature; split is by project)"
+  external_holdout: "LOPO aggregate = new-project expectation (each project held out once)"
+  random_split_used: false
+  leakage_checks_passed: true
+
+# Source: OOF predictions (oof.parquet), aggregate bit-identical to checkpoints/metrics.json
+# (R2 = 0.4182242204386467). Computed by evaluation/compute_biomass_metrics.py.
+metrics:
+  regression:
+    mae:
+      threshold: 45.0            # realistic
+      current_score: 41.49
+      gap: 3.51                  # margin under threshold (pass)
+      pass_fail: "PASS"
+      suspected_failure_source: null
+      recommended_upstream_fix: null
+    rmse:
+      threshold: 60.0            # realistic
+      current_score: 56.58
+      gap: 3.42                  # margin under threshold (pass)
+      pass_fail: "PASS"
+      suspected_failure_source: null
+      recommended_upstream_fix: null
+    r2:
+      threshold: 0.40            # realistic; iter-0 acceptance = 0.42 +/- 0.03
+      current_score: 0.4182
+      gap: 0.0182
+      pass_fail: "PASS"
+      suspected_failure_source: null
+      recommended_upstream_fix: null
+    bias:
+      threshold: 5.0             # |bias| <= 5
+      current_score: 0.50
+      gap: 4.50
+      pass_fail: "PASS"
+      suspected_failure_source: null
+      recommended_upstream_fix: null
+    calibration:
+      threshold: 10.0            # max |mean residual| per predicted-value decile
+      current_score: 4.34
+      gap: 5.66
+      pass_fail: "PASS"
+      suspected_failure_source: null
+      recommended_upstream_fix: "well-calibrated on average; range collapse is the live issue (see per_quintile_bias)"
+    per_quintile_bias:
+      threshold_abs_max: 30.0
+      Q1: 35.56
+      Q2: 31.77
+      Q3: 17.33
+      Q4: -10.13
+      Q5: -72.05
+      max_abs: 72.05
+      pass_fail: "FAIL"
+      suspected_failure_source: "feature insufficiency (AlphaEarth Foundation (AEF) embeddings cannot resolve vertical structure)"
+      recommended_upstream_fix: "add GEDI canopy height feature (iteration 1)"
+    predicted_range_discrimination:
+      threshold: 0.60            # stretch
+      current_score: 0.468
+      gap: -0.132
+      by_region: { mw: 0.467, ne: 0.490, wv: 0.192 }
+      pass_fail: "FAIL"
+      suspected_failure_source: "embeddings ceiling — model compresses dynamic range (WV 0.19 ~ research anchor 0.21)"
+      recommended_upstream_fix: "add GEDI canopy height feature (iteration 1)"
+    per_ecoregion_r2:
+      threshold: 0.40            # realistic, per ecoregion
+      Appalachian mixed mesophytic forests: { r2: 0.157, rmse: 80.73, mae: 62.25, bias: -0.06, n: 598, pass_fail: "FAIL" }
+      New England-Acadian forests: { r2: 0.476, rmse: 44.87, mae: 34.17, bias: 0.93, n: 1407, pass_fail: "PASS" }
+      Western Great Lakes forests: { r2: 0.415, rmse: 55.56, mae: 40.69, bias: 0.37, n: 2619, pass_fail: "PASS" }
+      Upper Midwest US forest-savanna transition: { r2: -0.081, rmse: 46.34, mae: 40.01, bias: 7.68, n: 12, pass_fail: "FAIL (n=12, not material)" }
+      suspected_failure_source: "Appalachian (WV) is the worst ecoregion — same feature ceiling, most acute in high-biomass closed-canopy hardwood"
+      recommended_upstream_fix: "GEDI most impactful for Appalachian (iteration 1)"
+    external_holdout_r2:
+      threshold: 0.40
+      current_score: 0.4182
+      project_name: "ALL (LOPO aggregate over 23 held-out projects)"
+      gap: 0.0182
+      pass_fail: "PASS"
+      suspected_failure_source: null
+      recommended_upstream_fix: null
+    error_by_region:
+      mw: { r2: 0.414, rmse: 55.52, mae: 40.69, bias: 0.40, n: 2631 }
+      ne: { r2: 0.476, rmse: 44.87, mae: 34.17, bias: 0.93, n: 1407 }
+      wv: { r2: 0.157, rmse: 80.73, mae: 62.25, bias: -0.06, n: 598 }
+    error_by_year: {}   # year pooled; not decomposed (year not a model feature this iteration)
+
+overall_decision:
+  target_met: true            # iter-0 acceptance: R2=0.4182 within +/-0.03 of 0.42, and >= realistic 0.40
+  benchmark_met: true         # realistic benchmark R2 >= 0.40 met
+  reproduction_confirmed: true  # retrain aggregate bit-identical to baseline joint_v2 metrics.json
+  earliest_impacted_stage: "preprocessing/feature_source (for the stretch goal only)"
+  rerun_boundary: "research -> preprocess -> train -> evaluate, with GEDI feature source (iteration 1)"
+  notes:
+    - "Iteration 0 is a wiring validation; the aggregate target (R2=0.42) is reproduced exactly."
+    - "OOF-reuse gate PASSED: oof.parquet aggregate R2 = 0.4182242204386467 == checkpoints/metrics.json (bit-identical retrain), so reusing baseline OOF for the breakdown metrics is exact, not approximate."
+    - "per_quintile_bias and predicted_range_discrimination FAIL by design — this is the diagnosed embeddings feature ceiling (range compression: over-predict low, under-predict high), not a wiring or tuning fault. The five tuning levers (more plots, footprint sampling, Huber, log-target, isotonic) were already ruled out (see research/deep_research.md)."
+    - "Weakest ecoregion = Appalachian mixed mesophytic (WV), R2=0.157, discrimination 0.19 — the iteration-1 GEDI lever should help here most."
+
+reproducibility_footer:
+  input_artefact_sha256: "b0e490b7ceb5bd59acd5965fefbe705ffe6707ab140575c9f9c49709b6a7393d"  # ANEW gpkg (ecoregion source)
+  oof_source: "/home/mattc/code/tf-deep-landcover/experiments/agb/usa_v1_pilot_joint_v2/oof.parquet"
+  libraries: "scikit-learn, pandas, geopandas, numpy"
+  seed: 42
+  command_or_entrypoint: "uv run python evaluation/compute_biomass_metrics.py (cwd: tf-deep-landcover)"
+  timestamp_utc: "2026-05-29T09:37:00Z"

@@ -1,0 +1,27 @@
+strategy: spatial_holdout
+partition_key: project_name
+description: >
+  Leave-one-project-out (LOPO) cross-validation over the 23 projects in the joint_v2 pool.
+  Every fold holds out one entire project; reported metrics are aggregated over the
+  out-of-fold predictions, so each plot is scored by a model that never saw its project.
+
+n_folds: 23
+random_split_used: false
+random_seed: 42
+leakage_checks_passed: true
+leakage_checks:
+  target_in_features: false           # features are satellite embeddings only
+  project_crosses_folds: false        # partition is exactly by project_name
+  duplicate_plots_across_folds: false
+  random_split_used: false
+
+holdout_summary:
+  spatial_holdout: "project_name LOPO (primary; 23 folds)"
+  temporal_holdout: "n/a — 2022/2023 pooled, year not a model feature; split is by project"
+  external_holdout: >
+    The LOPO aggregate IS the external/new-project holdout estimate — each project is held
+    out exactly once. No separate random or external split is reported.
+
+notes:
+  - PALSAR-2 / SAR features excluded (ablated +0.02 R², within noise).
+  - This split reproduces the baseline joint_v2 partition exactly (n=4636, 23 folds).

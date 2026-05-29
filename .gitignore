@@ -1,0 +1,30 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+*.egg-info/
+
+# Environments / secrets — never commit real credentials
+*.env
+!*.env.example
+config/*.json
+!config/*.example.json
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+
+# Build / coverage
+build/
+dist/
+.coverage
+htmlcov/
+gee_config/

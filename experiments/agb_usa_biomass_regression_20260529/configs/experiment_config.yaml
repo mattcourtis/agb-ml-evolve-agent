@@ -1,0 +1,115 @@
+experiment:
+  experiment_id: "agb_usa_biomass_regression_20260529"
+  seed: 42
+  subject: "agb_usa"
+  geography: "CONUS forest joint v2 (WV+Midwest+NE)"
+  task_type: "biomass_regression"
+  output_dir: "./experiments/agb_usa_biomass_regression_20260529"
+
+task:
+  target_variable: "CO2"                          # standing-stock tCO2/acre (locked column from ANEW gpkg; Annual_CO2 deferred)
+  spatial_resolution: "10 m features, ~14.7 m plot footprint (1/24 acre)"
+  temporal_horizon: "annual, 2022 + 2023 pooled"
+  spatial_unit: "field plot (1/24 acre circular)"
+  inference_unit: "per-plot; wall-to-wall 10 m raster deferred"
+
+data:
+  raw_sources:
+    - "/home/mattc/data-space/carbonmap-embeddings/training-data/anew_gt_with_eco_info.gpkg"
+    - "/home/mattc/code/tf-deep-landcover/data/raw/locations/agb_usa_v1_pilot_wv.geojson"
+    - "/home/mattc/code/tf-deep-landcover/data/raw/locations/agb_usa_v1_pilot_midwest.geojson"
+    - "/home/mattc/code/tf-deep-landcover/data/raw/locations/agb_usa_v1_pilot_northeast.geojson"
+  preferred_sources:
+    embeddings: ["AlphaEarth Foundation (AEF) (Source Coop COG, 64-dim, 10 m, annual)"]
+    lidar: []                 # iteration-1 lever: GEDI L2A RH / L4A AGBD — route deferred to Research Actor
+    sar: []                   # PALSAR-2 ablated out at +0.02 R² in joint v2; not in iteration-0 baseline
+    optical: []
+    topography: ["Copernicus DEM GLO-30 (COPDEM 30 m; slope, aspect, and other derivatives at Research Actor discretion)"]
+    aux: []
+    labels: ["ANEW field plots (target column: CO2)"]
+  database_uri: "/home/mattc/data-space/carbonmap-embeddings/training-data/anew_gt_with_eco_info.gpkg"
+  data_dir: "/home/mattc/code/tf-deep-landcover"
+  gee:
+    enabled: true
+    cloud_project: "${GCP_PROJECT:-}"
+    service_account: "${EE_SERVICE_ACCOUNT:-}"
+    credentials_path: "${GOOGLE_APPLICATION_CREDENTIALS:-}"
+  huggingface:
+    enabled: true
+    repo_org_or_user: null
+    token_env: "HF_TOKEN"
+  aws:
+    enabled: true
+    profile: "${AWS_PROFILE:-}"
+    region: "${AWS_REGION:-us-west-2}"
+    s3_bucket: "${S3_BUCKET:-}"
+
+preprocessing:
+  cloud_masking: "n/a (annual embeddings already gap-filled)"
+  # Biomass uses annual composites, not crop-calendar windows. Train/test years
+  # must not overlap when years are pooled — see splits.temporal_holdout_rule.
+  temporal_alignment: "annual_composite"
+  resampling_policy: "task_specific"
+  normalization: "fit_on_train_only"
+  leakage_checks_required: true
+  data_versioning_required: true
+
+splits:
+  strategy: "spatial_holdout"
+  spatial_holdout_unit: "project_name"
+  temporal_holdout_rule: null
+  # For spatial_holdout strategy, validation_fraction / test_fraction are
+  # ignored — partition keys (e.g. project_name) govern the split. Kept for
+  # compatibility with other strategies (random / spatiotemporal).
+  validation_fraction: 0.2
+  test_fraction: 0.2
+
+models:
+  require_simple_baseline: true
+  baseline_candidates:
+    - "ridge_on_pc20_embedding"     # simple linear baseline rung
+  advanced_candidates:
+    - "lightgbm_emb64"               # current production class — must reproduce joint v2 R²=0.42 in iteration 0
+  ensemble_allowed: true
+
+training:
+  budget_tier: "Small"
+  max_full_iterations: 3
+  allow_extended_iterations: false
+  per_actor_retry_limit: 3
+  early_stopping: true
+  save_best_checkpoint: true
+  log_every_n_steps: 50
+  runtime_budget_hours: 8           # one working day per iteration
+
+evaluation:
+  metrics:
+    - rmse
+    - mae
+    - r2
+    - bias
+    - per_quintile_bias
+    - predicted_range_discrimination
+    - per_ecoregion_r2
+  thresholds:
+    r2_realistic: 0.40
+    r2_stretch: 0.55
+    rmse_realistic: 60                # tCO2/acre
+    rmse_stretch: 45
+    predicted_range_discrimination_stretch: 0.6
+    per_quintile_bias_abs_max: 30
+    iteration_0_reproduce_tolerance: 0.03   # R² must land within ±0.03 of joint_v2 baseline (0.42)
+  benchmark_range:
+    source: "tf-deep-landcover/docs/runs/agb_usa.md and agb-modelling-context.md"
+    realistic: { r2: 0.40, rmse: 60 }
+    stretch:   { r2: 0.55, rmse: 45 }
+    iteration_0_baseline: { r2: 0.42, rmse: 57, mae: 41, n_plots: 4636, n_projects: 23 }
+
+finalisation:
+  save_model_card: true
+  save_data_card: true
+  save_environment_record: true
+  save_git_snapshot: true
+  push_to_huggingface: false
+  mirror_to_s3: false
+  export_gee_assets: false
