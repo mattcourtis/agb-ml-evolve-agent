@@ -38,8 +38,9 @@ Experiment: `experiments/agb_usa_biomass_regression_20260529/`
 - **Trigger:** feature ceiling rediscovered (Q1/Q5 collapse); optical embeddings cannot resolve vertical structure
 - **Lever:** GEDI canopy height as added feature (spaceborne LiDAR measures what optical sensors cannot)
 - **Target:** R² ≥ 0.55, predicted_range_discrimination ≥ 0.6
-- **First deliverable:** Research Actor access-feasibility note — GEE asset (`LARSE/GEDI/GEDI02_A_002_MONTHLY`) vs LP DAAC `earthaccess` route; cost, latency, CONUS coverage
-- **Preflight blocker:** `GCP_PROJECT` / `GOOGLE_APPLICATION_CREDENTIALS` unset if GEE route chosen; NASA Earthdata login needed if LP DAAC route chosen
+- **Route committed:** GEE asset `LARSE/GEDI/GEDI02_A_002_MONTHLY` — GEE setup confirmed 2026-05-29; LP-DAAC `earthaccess` route no longer needed
+- **First deliverable:** Research Actor to extract GEDI canopy height (rh98 / cover) for all 4,636 plot locations via GEE, merge with existing feature set, rerun train → evaluate pipeline
+- **Preflight:** None — `GCP_PROJECT` and `GOOGLE_APPLICATION_CREDENTIALS` are set; `earthengine` CLI authenticated
 
 ## Risks to monitor
 

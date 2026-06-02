@@ -1,35 +1,18 @@
-model: lightgbm_emb64
-seed: 42
-cv:
-  strategy: leave-one-project-out
-  partition_key: project_name
-  n_folds: 23
-
-hyperparameters:        # hardcoded in tf-deep-landcover/src/agb/train_agb_lgbm.py
+experiment_id: agb_usa_biomass_regression_20260529
+iteration: 2
+features_path: /home/mattc/code/agb-ml-agent-evolve/experiments/agb_usa_biomass_regression_20260529/preprocessing/features_iter2.parquet
+out_dir: /home/mattc/code/agb-ml-agent-evolve/experiments/agb_usa_biomass_regression_20260529/checkpoints
+fig_dir: /home/mattc/code/agb-ml-agent-evolve/experiments/agb_usa_biomass_regression_20260529/evaluation/figures
+trainer_module: src.agb.train_agb_lgbm
+trainer_repo: /home/mattc/code/tf-deep-landcover
+feature_prefixes: ["emb_", "gedi_", "chm_", "topo_", "dist_"]
+lgbm_params:
   num_leaves: 31
   learning_rate: 0.05
   n_estimators: 2000
-  early_stopping_rounds: 50
-
-features:
-  source_parquet: "/home/mattc/code/tf-deep-landcover/experiments/agb/usa_v1_pilot_joint_v2/features.parquet"
-  columns: "emb_00..emb_63"
-  count: 64
-  pca_n_components: null     # not used (raw 64-dim embeddings)
-
-invocation:
-  repo: tf-deep-landcover
-  repo_sha: e8c70584
-  command: >
-    cd /home/mattc/code/tf-deep-landcover &&
-    uv run python -m src.agb.train_agb_lgbm
-    --features /home/mattc/code/tf-deep-landcover/experiments/agb/usa_v1_pilot_joint_v2/features.parquet
-    --out-dir /home/mattc/code/crop-ml-agent-evolve/experiments/agb_usa_biomass_regression_20260529/checkpoints
-    --fig-dir /home/mattc/code/crop-ml-agent-evolve/experiments/agb_usa_biomass_regression_20260529/evaluation/figures
-
-outputs:
-  out_dir: "experiments/agb_usa_biomass_regression_20260529/checkpoints"
-  model: "checkpoints/model.txt  (copied to checkpoints/best.ckpt)"
-  metrics: "checkpoints/metrics.json"
-  metrics_history: "checkpoints/metrics_history.csv (per-fold, synthesised from metrics.json)"
-  figures: "evaluation/figures/{residuals_by_quintile,shap_beeswarm,shap_grouped,emb_correlation}.png"
+  min_child_samples: 20
+  random_state: 42
+cv_strategy: leave_one_project_out
+cv_partition_key: project_name
+seed: 42
+tf_deep_landcover_sha: c53c446e0ee11d9d450d35eaa918b58b5a8da828  # uncommitted patch — feature_prefixes expanded

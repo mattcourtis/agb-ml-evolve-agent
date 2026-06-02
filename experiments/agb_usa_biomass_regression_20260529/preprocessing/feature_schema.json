@@ -14,12 +14,167 @@
   "eco_join_key": ["project_name", "Plot_ID"],
   "metadata_columns": ["plot_id", "project_name", "year", "lon", "lat", "target", "failure", "region"],
   "model_feature_columns": {
-    "type": "olmoearth_aef_embedding",
-    "count": 64,
-    "names_pattern": "emb_00..emb_63",
-    "dtype": "float",
-    "scaling": "none (raw embeddings; LightGBM tree model)"
+    "embedding": {
+      "type": "olmoearth_aef_embedding",
+      "count": 64,
+      "names_pattern": "emb_00..emb_63",
+      "dtype": "float",
+      "scaling": "none (raw embeddings; LightGBM tree model)"
+    },
+    "gedi": {
+      "count": 5,
+      "names": ["gedi_rh98", "gedi_cover", "gedi_pai", "gedi_fhd_normal", "gedi_n_samples"],
+      "dtype": "float / int",
+      "note": "prefix gedi_ picked up by trainer feature_cols filter"
+    },
+    "canopy_height": {
+      "count": 1,
+      "names": ["chm_m"],
+      "dtype": "float",
+      "prefix": "chm_",
+      "note": "ETH Global Canopy Height 2020 (users/nlang/ETH_GlobalCanopyHeight_2020_10m_v1)"
+    },
+    "topography": {
+      "count": 5,
+      "names": ["topo_elevation", "topo_slope", "topo_aspect_cos", "topo_aspect_sin", "topo_tpi"],
+      "dtype": "float",
+      "prefix": "topo_",
+      "note": "SRTM v3 (USGS/SRTMGL1_003) derivatives via ee.Terrain.slope/aspect + focal_mean TPI"
+    },
+    "disturbance": {
+      "count": 1,
+      "names": ["dist_years_since"],
+      "dtype": "float",
+      "prefix": "dist_",
+      "note": "Hansen GFC 2025 lossyear; sentinel 100 = undisturbed; 0 = disturbed 2023 or later"
+    }
   },
   "years_pooled": [2022, 2023],
-  "regions": {"mw": 2631, "ne": 1407, "wv": 598}
+  "regions": {"mw": 2631, "ne": 1417, "wv": 598},
+  "iteration": 1,
+  "gedi_columns": [
+    {
+      "name": "gedi_rh98",
+      "original_name": "rh98",
+      "dtype": "float",
+      "source": "LARSE/GEDI/GEDI02_A_002_MONTHLY",
+      "meaning": "98th percentile relative height (m); proxy for canopy top height",
+      "composite": "median over 2021-01-01 to 2024-01-01, quality_flag==1 and degrade_flag==0",
+      "reducer": "mean over 500 m buffer at 25 m scale"
+    },
+    {
+      "name": "gedi_cover",
+      "original_name": "cover",
+      "dtype": "float",
+      "source": "LARSE/GEDI/GEDI02_B_002_MONTHLY",
+      "meaning": "total canopy cover fraction (0–1)",
+      "composite": "median over 2021-01-01 to 2024-01-01, l2b_quality_flag==1 and degrade_flag==0",
+      "reducer": "mean over 500 m buffer at 25 m scale"
+    },
+    {
+      "name": "gedi_pai",
+      "original_name": "pai",
+      "dtype": "float",
+      "source": "LARSE/GEDI/GEDI02_B_002_MONTHLY",
+      "meaning": "plant area index (m² m⁻²)",
+      "composite": "median over 2021-01-01 to 2024-01-01, l2b_quality_flag==1 and degrade_flag==0",
+      "reducer": "mean over 500 m buffer at 25 m scale"
+    },
+    {
+      "name": "gedi_fhd_normal",
+      "original_name": "fhd_normal",
+      "dtype": "float",
+      "source": "LARSE/GEDI/GEDI02_B_002_MONTHLY",
+      "meaning": "foliage height diversity (normalised Shannon entropy of plant area density profile)",
+      "composite": "median over 2021-01-01 to 2024-01-01, l2b_quality_flag==1 and degrade_flag==0",
+      "reducer": "mean over 500 m buffer at 25 m scale"
+    },
+    {
+      "name": "gedi_n_samples",
+      "dtype": "int",
+      "source": "LARSE/GEDI/GEDI02_A_002_MONTHLY",
+      "meaning": "number of monthly GEDI L2A composites (out of 36) with >= 1 valid pixel within the 500 m buffer; integer 0-36",
+      "composite": "binary presence image per month (1 where rh98 valid after quality mask, 0 elsewhere); summed across 36 months; max over 500 m buffer",
+      "reducer": "max over 500 m buffer at 25 m scale"
+    }
+  ],
+  "iteration": 2,
+  "iteration_2_columns": [
+    {
+      "name": "chm_m",
+      "dtype": "float",
+      "meaning": "Mean canopy height in metres at plot centroid",
+      "source": "users/nlang/ETH_GlobalCanopyHeight_2020_10m_v1",
+      "band": "b1",
+      "epoch": "2020",
+      "scale_m": 10,
+      "reducer": "mean (point sample at centroid, scale=10 m)"
+    },
+    {
+      "name": "topo_elevation",
+      "dtype": "float",
+      "meaning": "Surface elevation in metres (SRTM v3, USGS/SRTMGL1_003)",
+      "source": "USGS/SRTMGL1_003",
+      "band": "elevation",
+      "epoch": "2000 (SRTM acquisition, February 2000)",
+      "scale_m": 30,
+      "reducer": "mean (point sample at centroid, scale=30 m)"
+    },
+    {
+      "name": "topo_slope",
+      "dtype": "float",
+      "meaning": "Terrain slope in degrees (ee.Terrain.products output)",
+      "source": "USGS/SRTMGL1_003",
+      "band": "slope (derived via ee.Terrain.slope(dem.toFloat()))",
+      "epoch": "2000 (SRTM acquisition)",
+      "scale_m": 30,
+      "reducer": "mean (point sample at centroid, scale=30 m)"
+    },
+    {
+      "name": "topo_aspect_cos",
+      "dtype": "float",
+      "meaning": "Cosine of terrain aspect angle (aspect in radians); encodes N/S component",
+      "source": "USGS/SRTMGL1_003",
+      "band": "aspect (derived via ee.Terrain.aspect(dem.toFloat()), cos-transformed)",
+      "epoch": "2000 (SRTM acquisition)",
+      "scale_m": 30,
+      "reducer": "mean (point sample at centroid, scale=30 m)"
+    },
+    {
+      "name": "topo_aspect_sin",
+      "dtype": "float",
+      "meaning": "Sine of terrain aspect angle (aspect in radians); encodes E/W component",
+      "source": "USGS/SRTMGL1_003",
+      "band": "aspect (derived via ee.Terrain.aspect(dem.toFloat()), sin-transformed)",
+      "epoch": "2000 (SRTM acquisition)",
+      "scale_m": 30,
+      "reducer": "mean (point sample at centroid, scale=30 m)"
+    },
+    {
+      "name": "topo_tpi",
+      "dtype": "float",
+      "meaning": "Topographic Position Index: elevation minus focal mean within 500 m radius (positive = ridge, negative = valley)",
+      "source": "USGS/SRTMGL1_003",
+      "band": "elevation (TPI derived via focal_mean 500 m)",
+      "epoch": "2000 (SRTM acquisition)",
+      "scale_m": 30,
+      "reducer": "mean (point sample at centroid, scale=30 m)"
+    },
+    {
+      "name": "dist_years_since",
+      "dtype": "float",
+      "meaning": "Years since most recent recorded forest loss (Hansen GFC 2025). dist_years_since = max(0, 23 − lossyear) where lossyear > 0 (lossyear is encoded 1=2001 … 25=2025); 100 where no loss recorded (lossyear == 0). max(0, ...) clamps post-2023 disturbance (lossyear 24–25) to 0.",
+      "source": "UMD/hansen/global_forest_change_2025_v1_13",
+      "band": "lossyear",
+      "epoch": "2001-2023",
+      "scale_m": 30,
+      "reducer": "mean (point sample at centroid, scale=30 m)"
+    }
+  ],
+  "dropped_columns": [
+    {
+      "name": "gedi_temporal_coverage_months",
+      "reason": "identical to gedi_n_samples for monthly composites; redundant as model feature"
+    }
+  ]
 }

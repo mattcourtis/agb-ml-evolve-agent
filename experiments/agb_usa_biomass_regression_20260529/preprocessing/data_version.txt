@@ -12,3 +12,43 @@ notes: |
   iteration 0 reuses the prior joint_v2 features.parquet (no re-extraction). The SHA256 above
   is the ANEW gpkg (label + ecoregion source). The features.parquet was produced by the sibling
   extractor at tf_deep_landcover_sha e8c70584; this same SHA must appear in final/git_snapshot.txt.
+
+iteration_1:
+  gedi_features_csv_sha256: 4a442c34a97025f8f43448cef983f6530c0defe01a8c6ca51819b23dc3065782
+  features_iter1_parquet_sha256: 70327b112dc2bcd497100e68a2fe3d9216d1c869e3bf05afb6b84c7c4c3dacfe
+  source_uri: ee://LARSE/GEDI/GEDI02_A_002_MONTHLY
+  source_uri_l2b: ee://LARSE/GEDI/GEDI02_B_002_MONTHLY
+  snapshot_timestamp_utc: 2026-05-29T11:00:00Z
+  label_source_revision: none (GEDI is a co-feature, not a label source)
+  notes: |
+    GEDI features extracted via GEE ImageCollection + updateMask + median composite.
+    Buffer expanded to 500 m from spec's 50 m (see preprocessing_spec.md Iteration 1).
+    gedi_n_samples and gedi_temporal_coverage_months fixed to integer counts (0-36) via
+    scripts/fix_gedi_counts.py (presence-sum + ee.Reducer.max() approach per Critic rev 1).
+    gedi_features.csv contains 25 zero-coverage plot_ids (gedi_n_samples == 0); downstream
+    unique null per region in features_iter1.parquet: WV 24/322 = 7.5%, NE 24/344 = 7.0%,
+    MW 24/567 = 4.2%; null values retained (no imputation; all below 10% threshold).
+    All 4,646 parquet rows preserved. Split audit produced: preprocessing/split_audit.csv.
+
+iteration_2:
+  iter2_features_csv_sha256: 42d85c9de6519d380db70c6069ca8ae47f200f6223f9366a54c5be9c1a84c20b
+  features_iter2_parquet_sha256: fba811bc43027e61b2f17d2740649035a88169955bdc172c1ffee8d1303adf39
+  source_uri_chm: ee://users/nlang/ETH_GlobalCanopyHeight_2020_10m_v1
+  source_uri_dem: ee://USGS/SRTMGL1_003
+  source_uri_hansen: ee://UMD/hansen/global_forest_change_2025_v1_13
+  snapshot_timestamp_utc: 2026-05-29T13:00:00Z
+  label_source_revision: none (all are co-features)
+  notes: |
+    Three GEE assets extracted via point-sample reduceRegions (ee.Reducer.mean()).
+    CHM at 10 m scale (ETH 2020 v1, band b1, renamed chm_m); 1 NE null (0.07%).
+    Topography at 30 m scale from USGS/SRTMGL1_003 (SRTM v3, single Image):
+    elevation, slope (float degrees via ee.Terrain.slope(dem.toFloat())),
+    aspect_cos, aspect_sin, TPI (500 m focal_mean). COPERNICUS/DEM/GLO30 mosaic
+    abandoned — mosaic() destroys projection, causing near-zero slope values.
+    Disturbance at 30 m scale from Hansen GFC 2025 lossyear band:
+    dist_years_since = max(0, 23 - lossyear) where lossyear > 0, else 100;
+    clamped to 0 for post-2023 disturbance (lossyear 24-25). Range: 0-100.
+    All 4,646 unique plots extracted (row_key = row_index); 0% nulls except chm_m.
+    Merged into features_iter2.parquet (4,646 rows, 84 cols) via left join on row_key.
+    Trainer patch: chm_, topo_, dist_ prefixes added to train_agb_lgbm.py
+    (uncommitted patch on SHA c53c446e0ee11d9d450d35eaa918b58b5a8da828).
