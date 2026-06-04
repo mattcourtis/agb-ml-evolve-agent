@@ -28,3 +28,9 @@ dist/
 .coverage
 htmlcov/
 gee_config/
+
+# Large regenerable prediction artefacts (cache/intermediates; exceed GitHub limits)
+*.npy
+*.vrt
+**/predictions/bayfield_cofeatures_30m.tif
+**/predictions/bayfield_dw_trees_prob_30m.tif

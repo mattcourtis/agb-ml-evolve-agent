@@ -1,0 +1,12 @@
+<PAMDataset>
+  <PAMRasterBand band="1">
+    <Description>predicted_AGB_tCO2_per_acre_embonly</Description>
+    <Metadata>
+      <MDI key="STATISTICS_MAXIMUM">221.36058044434</MDI>
+      <MDI key="STATISTICS_MEAN">110.28044863055</MDI>
+      <MDI key="STATISTICS_MINIMUM">12.44363117218</MDI>
+      <MDI key="STATISTICS_STDDEV">42.549101739261</MDI>
+      <MDI key="STATISTICS_VALID_PERCENT">13.08</MDI>
+    </Metadata>
+  </PAMRasterBand>
+</PAMDataset>

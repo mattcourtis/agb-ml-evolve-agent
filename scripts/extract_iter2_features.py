@@ -150,15 +150,29 @@ def build_topo_image() -> ee.Image:
     return elevation.addBands(slope).addBands(aspect_cos).addBands(aspect_sin).addBands(tpi)
 
 
-def build_dist_image() -> ee.Image:
-    """Hansen GFC 2025 — years since last recorded loss (100 if never disturbed)."""
+def build_dist_image(survey_year: int = 2023) -> ee.Image:
+    """Hansen GFC — years since last *pre/at-survey* loss (100 if undisturbed by survey).
+
+    lossyear values: 0 = no loss, 1..N = two-digit calendar year (1=2001, 25=2025).
+
+    BUG FIX (2026-06): the previous implementation computed `max(0, 23 - lossyear)` with a
+    hard-coded 2023 reference. This (a) ignored each plot's actual survey year and (b) mapped
+    POST-survey loss (lossyear > 23) to 0 — i.e. it stamped a "just disturbed" signal onto plots
+    whose field biomass was measured *before* the harvest and is legitimately high. The audit
+    found 46% of post-survey plots received `years_since=0`, a feature-label inversion.
+
+    Corrected, leakage-safe definition (parameterised by the plot's survey year):
+      - loss in (0, survey_year_code]  -> years_since = survey_year_code - lossyear  (>= 0)
+      - no loss, OR loss AFTER survey   -> 100 (treated as undisturbed as of survey date)
+    Post-survey information is never encoded. Callers should pass the plot's survey year; the
+    survey-relative production feature is `dstx_pre_ysd` in extract_disturbance_timing.py.
+    """
     lossyear = ee.Image("UMD/hansen/global_forest_change_2025_v1_13").select("lossyear")
-    # lossyear values: 0 = no loss, 1–N = two-digit year (1=2001, 25=2025 in the 2025 product).
-    # years_since_2023 = max(0, 23 - lossyear) where lossyear > 0, else 100 (undisturbed).
-    # Clamp to 0 for lossyear > 23 (disturbance after field measurement year 2023).
+    code = survey_year - 2000  # e.g. 22 or 23
+    pre_survey_loss = lossyear.gt(0).And(lossyear.lte(code))
     years_since = (
-        ee.Image(100)
-        .where(lossyear.gt(0), ee.Image(23).subtract(lossyear).max(ee.Image(0)))
+        ee.Image(100)  # undisturbed (or only post-survey loss) -> sentinel
+        .where(pre_survey_loss, ee.Image(code).subtract(lossyear))
         .rename("dist_years_since")
     )
     return years_since
