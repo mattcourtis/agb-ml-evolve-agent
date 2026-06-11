@@ -1,0 +1,20 @@
+extraction_date: 2026-06-08
+git_commit: b6d219ac5090543f58480d9df30e6a16acb35003
+aef_asset: GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL
+hansen_asset: UMD/hansen/global_forest_change_2025_v1_13
+encoding_gate_PASS: True (mean_corr 0.9857, slope_median 1.0061)
+
+affine provenance (revision 2):
+  production_affine: aef_affine.parquet — per-band OLS fit on ALL 409 valid Bayfield plots
+    (a range [128.6, 569.9], c range [-30.77, 25.21]); this is the affine APPLIED to Ireland.
+  gate_validation_evidence: aef_affine_gate_train287.parquet — fit on 287 train / validated on
+    122 held-out (corr 0.986, min 0.951; post-affine slope median 1.006); proves generalisation.
+    The held-out numbers in encoding_gate.json are this gate evidence (NOT the production fit).
+  Ireland smoke prediction (full-409 affine, embdstx head): min 26.7 / mean 91.6 / max 138.4 tCO2/acre.
+
+inputs (sha256[:16] | bytes | path):
+  db_csv: 8f34cb1eae381395 | 11721 | /home/mattc/data-space/carbonmap-embeddings/dasos-ireland/deepbiomass-model-outputs/Deep Biomass - Aggregated Data & Portfolio Summary.csv
+  gpkg: b453cec8d320cc10 | 1478656 | /home/mattc/data-space/carbonmap-embeddings/boundary-files/dasos_fgl_2025ye.gpkg
+  train_parquet: 3ff73b956c3043d2 | 2211135 | /home/mattc/code/tf-deep-landcover/experiments/agb/usa_v1_pilot_joint_v2/features.parquet
+  model: 681d939258695f76 | 205266 | /home/mattc/code/agb-ml-agent-evolve/models/inference_model_embdstx.txt
+  features_json: 9f80f0dfe17fdb3c | 1202 | /home/mattc/code/agb-ml-agent-evolve/models/inference_features_embdstx.json

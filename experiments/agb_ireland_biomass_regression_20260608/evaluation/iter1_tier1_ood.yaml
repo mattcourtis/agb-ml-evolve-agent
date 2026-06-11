@@ -1,0 +1,72 @@
+meta:
+  seed: 42
+  space: native-float 64-D AEF (GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL)
+  n_ireland: 141
+  n_anew: 12837
+  irish_high_band_tco2_acre:
+  - 105.0
+  - 262.0
+  baseline_iter0:
+    frac_ireland_beyond_99pct_training_radius: 1.0
+    domain_auc_usa_vs_ireland: 0.999998
+  full_pool_domain_auc: 1.0
+project_rank_correlations_spearman:
+  rank_mmd|rank_p: 0.474
+  rank_energy|rank_mmd: 0.998
+  rank_energy|rank_mahal: 0.468
+  rank_energy|rank_knn: 0.821
+  rank_energy|rank_p: 0.47
+  rank_mahal|rank_mmd: 0.462
+  rank_mahal|rank_p: 0.138
+  rank_knn|rank_mmd: 0.831
+  rank_knn|rank_mahal: 0.696
+  rank_knn|rank_p: 0.501
+tier1_ood_by_subset:
+  S0_full:
+    n_plots: 12837
+    n_projects: 52
+    subset_radius_99pct: 15.1691
+    ireland_mahal_min: 21.6835
+    ireland_mahal_median: 27.0634
+    ireland_mahal_max: 35.8017
+    frac_ireland_beyond_99pct: 1.0
+    domain_auc_subset_vs_ireland: 1.0
+    high_band_decile_coverage: 1.0
+    co2_max: 1262.1
+  S1_climate_ecoregion:
+    n_plots: 3275
+    n_projects: 15
+    subset_radius_99pct: 13.5759
+    ireland_mahal_min: 26.8007
+    ireland_mahal_median: 32.8496
+    ireland_mahal_max: 43.4443
+    frac_ireland_beyond_99pct: 1.0
+    domain_auc_subset_vs_ireland: 1.0
+    high_band_decile_coverage: 1.0
+    co2_max: 1010.8
+  S2_project_nearest:
+    n_plots: 1712
+    n_projects: 8
+    subset_radius_99pct: 13.0724
+    ireland_mahal_min: 21.4807
+    ireland_mahal_median: 26.5304
+    ireland_mahal_max: 35.2641
+    frac_ireland_beyond_99pct: 1.0
+    domain_auc_subset_vs_ireland: 0.999983
+    high_band_decile_coverage: 1.0
+    co2_max: 1010.8
+  S3_plot_coverage:
+    n_plots: 3540
+    n_projects: 48
+    subset_radius_99pct: 13.5913
+    ireland_mahal_min: 20.5889
+    ireland_mahal_median: 25.7113
+    ireland_mahal_max: 34.3984
+    frac_ireland_beyond_99pct: 1.0
+    domain_auc_subset_vs_ireland: 0.999992
+    high_band_decile_coverage: 1.0
+    co2_max: 262.0
+figures:
+- evaluation/figures/iter1_pca_overlap_subsets.png
+- evaluation/figures/iter1_project_mmd_ranking.png
+- evaluation/figures/iter1_umap_overlap_subsets.png

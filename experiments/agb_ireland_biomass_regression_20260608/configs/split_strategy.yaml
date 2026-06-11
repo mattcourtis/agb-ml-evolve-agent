@@ -1,0 +1,27 @@
+# Split strategy — WAIVED (zero-shot transfer, no ground truth)
+# Authored by Orchestrator (collapsed formality stage); consistent with ACCEPTED
+# experiment_design.md and IMPLEMENTATION_PLAN mode.
+
+strategy: "none_zero_shot_transfer"
+rationale: >
+  The pre-trained embdstx head (models/inference_model_embdstx.txt) is applied zero-shot to
+  all 141 Irish Locations. There is NO Irish ground truth and NO model training in this pass,
+  so no train/validation/test split is applicable. The Deep Biomass product is an EXTERNAL
+  reference model (a directional lower bound), not labels — it is therefore not a leakage
+  source for the head and not a held-out test set in the supervised sense.
+
+train_val_test:
+  train_fraction: 0.0
+  validation_fraction: 0.0
+  test_fraction: 0.0
+
+leakage_position: >
+  Head training data (US ANEW plots, incl. Bayfield) is fully disjoint from the Irish
+  Locations geographically. The per-band affine encoding map was fit/validated ONLY on US
+  Bayfield plots (held-out 287/122 split) and is a global codec property; it does not use any
+  Irish target information. No Irish label is used anywhere (none exists).
+
+evaluation_partition: "all 141 Locations evaluated; comparison is per-Location vs the Deep Biomass reference."
+
+random_split_used: false
+leakage_checks_passed: true

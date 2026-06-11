@@ -1,0 +1,421 @@
+{
+  "key": "Location_Name",
+  "n_locations": 141,
+  "n_features": 67,
+  "feature_order": [
+    "emb_00",
+    "emb_01",
+    "emb_02",
+    "emb_03",
+    "emb_04",
+    "emb_05",
+    "emb_06",
+    "emb_07",
+    "emb_08",
+    "emb_09",
+    "emb_10",
+    "emb_11",
+    "emb_12",
+    "emb_13",
+    "emb_14",
+    "emb_15",
+    "emb_16",
+    "emb_17",
+    "emb_18",
+    "emb_19",
+    "emb_20",
+    "emb_21",
+    "emb_22",
+    "emb_23",
+    "emb_24",
+    "emb_25",
+    "emb_26",
+    "emb_27",
+    "emb_28",
+    "emb_29",
+    "emb_30",
+    "emb_31",
+    "emb_32",
+    "emb_33",
+    "emb_34",
+    "emb_35",
+    "emb_36",
+    "emb_37",
+    "emb_38",
+    "emb_39",
+    "emb_40",
+    "emb_41",
+    "emb_42",
+    "emb_43",
+    "emb_44",
+    "emb_45",
+    "emb_46",
+    "emb_47",
+    "emb_48",
+    "emb_49",
+    "emb_50",
+    "emb_51",
+    "emb_52",
+    "emb_53",
+    "emb_54",
+    "emb_55",
+    "emb_56",
+    "emb_57",
+    "emb_58",
+    "emb_59",
+    "emb_60",
+    "emb_61",
+    "emb_62",
+    "emb_63",
+    "dstx_pre_ysd",
+    "dstx_pre_loss_5yr",
+    "dstx_loss_frac_buf"
+  ],
+  "columns": {
+    "Location_Name": {
+      "dtype": "string",
+      "provenance": "DB Location Name (crosswalk key)"
+    },
+    "emb_00": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A00, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_01": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A01, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_02": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A02, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_03": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A03, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_04": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A04, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_05": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A05, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_06": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A06, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_07": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A07, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_08": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A08, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_09": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A09, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_10": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A10, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_11": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A11, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_12": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A12, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_13": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A13, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_14": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A14, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_15": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A15, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_16": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A16, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_17": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A17, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_18": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A18, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_19": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A19, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_20": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A20, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_21": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A21, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_22": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A22, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_23": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A23, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_24": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A24, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_25": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A25, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_26": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A26, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_27": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A27, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_28": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A28, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_29": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A29, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_30": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A30, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_31": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A31, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_32": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A32, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_33": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A33, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_34": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A34, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_35": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A35, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_36": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A36, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_37": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A37, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_38": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A38, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_39": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A39, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_40": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A40, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_41": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A41, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_42": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A42, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_43": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A43, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_44": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A44, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_45": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A45, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_46": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A46, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_47": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A47, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_48": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A48, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_49": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A49, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_50": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A50, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_51": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A51, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_52": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A52, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_53": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A53, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_54": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A54, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_55": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A55, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_56": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A56, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_57": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A57, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_58": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A58, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_59": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A59, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_60": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A60, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_61": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A61, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_62": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A62, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "emb_63": {
+      "dtype": "float64",
+      "provenance": "GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL band A63, reduceRegions(mean) over dissolved Location polygon at survey_year, production per-band affine (fit on FULL 409 valid Bayfield plots after held-out gate PASS) -> training codec",
+      "affine_applied": true
+    },
+    "dstx_pre_ysd": {
+      "dtype": "float64",
+      "provenance": "Hansen UMD/hansen/global_forest_change_2025_v1_13 survey-relative timing, reduceRegions over polygon",
+      "affine_applied": false
+    },
+    "dstx_pre_loss_5yr": {
+      "dtype": "float64",
+      "provenance": "Hansen UMD/hansen/global_forest_change_2025_v1_13 survey-relative timing, reduceRegions over polygon",
+      "affine_applied": false
+    },
+    "dstx_loss_frac_buf": {
+      "dtype": "float64",
+      "provenance": "Hansen UMD/hansen/global_forest_change_2025_v1_13 survey-relative timing, reduceRegions over polygon",
+      "affine_applied": false
+    }
+  },
+  "target": "CO2 standing stock, tCO2/acre (model output; not present here)",
+  "affine_provenance": {
+    "production_affine": "aef_affine.parquet \u2014 per-band OLS fit on ALL 409 valid Bayfield plots (applied to Ireland)",
+    "gate_validation_evidence": "aef_affine_gate_train287.parquet \u2014 fit on 287 train, validated on 122 held-out (corr 0.986, slope median 1.006); proves generalisation",
+    "n_plots_production_fit": 409
+  }
+}

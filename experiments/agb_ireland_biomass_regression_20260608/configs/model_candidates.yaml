@@ -1,0 +1,31 @@
+# Model candidates — pre-trained head selection (no training in this pass)
+# Authored by Orchestrator (collapsed formality stage); consistent with ACCEPTED upstream.
+
+selected_head:
+  id: "embdstx"
+  path: "models/inference_model_embdstx.txt"
+  features_path: "models/inference_features_embdstx.json"
+  n_features: 67                # 64 AEF embeddings + dstx_pre_ysd + dstx_pre_loss_5yr + dstx_loss_frac_buf
+  target: "CO2 standing stock, tCO2/acre"
+  training_range: [0.0, 520.951013322]
+  trained_on: "US ANEW plots (eastern + western/high-biomass conifer); plot-mean support"
+
+rationale: >
+  The embdstx head exactly matches the chosen Ireland feature set (AEF embeddings + survey-relative
+  Hansen disturbance-timing) with NO static CHM/topo layers — which were deliberately dropped for the
+  Ireland transfer (plan v1). The 73-feature head (inference_model.txt) additionally requires CHM+topo
+  and is therefore NOT selected. The embeddings-only head (inference_model_embonly.txt, 64 feat) is
+  retained only as an optional ablation; embdstx is preferred because disturbance-timing is the main
+  retained lever against optical saturation in even-aged plantations.
+
+not_selected:
+  - id: "full73"
+    path: "models/inference_model.txt"
+    reason: "requires CHM + topo co-features not in the Ireland feature set"
+  - id: "embonly"
+    path: "models/inference_model_embonly.txt"
+    reason: "ablation only; drops the disturbance-timing lever"
+
+training_performed: false
+inference_only: true
+status: ACCEPTED (orchestrator-authored formality; selection follows plan v1)

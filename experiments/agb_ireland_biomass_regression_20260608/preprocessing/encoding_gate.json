@@ -1,0 +1,32 @@
+{
+  "n_heldout": 122,
+  "n_corr_plots": 122,
+  "mean_corr_transformed": 0.9856891099059635,
+  "min_corr_transformed": 0.9514072062325664,
+  "slope_min": 0.8442268151427973,
+  "slope_max": 1.3015990557293395,
+  "slope_mean": 1.0235018739525104,
+  "slope_median": 1.0061178136786921,
+  "slope_frac_in_tolerance_band": 0.984375,
+  "intercept_abs_max": 16.37690872830033,
+  "intercept_median_rel_to_bandstd": 0.08528739898748733,
+  "slope_ok": true,
+  "intercept_ok": true,
+  "corr_ok": true,
+  "PASS": true,
+  "thresholds": {
+    "corr": 0.8,
+    "slope_median": [
+      0.95,
+      1.05
+    ],
+    "slope_band": [
+      0.8,
+      1.2
+    ],
+    "slope_band_frac": 0.9,
+    "intercept_median_rel_max": 0.5
+  },
+  "seed": 42,
+  "n_train": 287
+}

@@ -1,0 +1,9 @@
+# git snapshot — Ireland AGB final package
+generated_utc: 2026-06-08T09:41:43Z
+HEAD: b6d219ac5090543f58480d9df30e6a16acb35003
+branch: main
+remote: git@github.com:mattcourtis/agb-ml-evolve-agent.git  (PRIVATE — verified before any push)
+
+## Uncommitted experiment files (entire experiment dir is untracked at snapshot time):
+?? experiments/agb_ireland_biomass_regression_20260608/
+(... full experiment directory untracked; see 'git status' — the ACCEPTED artefacts and this final/ package are not yet committed.)

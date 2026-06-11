@@ -34,3 +34,17 @@ gee_config/
 *.vrt
 **/predictions/bayfield_cofeatures_30m.tif
 **/predictions/bayfield_dw_trees_prob_30m.tif
+
+# Experiment outputs live in the data-space (/home/mattc/data-space/carbonmap-embeddings),
+# not in git — keep the repo to code/docs/configs/specs only. See each experiment's
+# final/DATA_STORE.md for the moved-output location. Force-add a small file with `git add -f`.
+experiments/**/_*/
+experiments/**/*_pixel_tiffs*/
+experiments/**/*.tif
+experiments/**/*.gpkg
+experiments/**/*.parquet
+experiments/**/*.csv
+experiments/**/*.png
+experiments/**/*.html
+experiments/**/*.bak.parquet
+experiments/**/*_run.log

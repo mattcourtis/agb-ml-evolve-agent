@@ -1,0 +1,106 @@
+experiment:
+  experiment_id: "agb_ireland_biomass_regression_20260608"
+  seed: 42
+  subject: "agb_ireland"
+  geography: "Ireland - Dasos forestry portfolio (Sitka-dominant plantation)"
+  task_type: "biomass_regression"
+  output_dir: "./experiments/agb_ireland_biomass_regression_20260608"
+
+task:
+  mode: "zero_shot_transfer_and_model_comparison"   # NOT train-from-scratch
+  target_variable: "AGB CO2 standing stock, tCO2/acre (model output); reference Deep Biomass Mg/ha x 0.6977"
+  spatial_resolution: "10 m AEF, area-averaged over stand polygons"
+  temporal_horizon: "survey-year prediction (2023-2024); DB reference = mean 2020-2024"
+  spatial_unit: "141 Deep-Biomass Locations (dissolved from 1053 Dasos sub-compartments)"
+  inference_unit: "per-Location"
+
+data:
+  raw_sources:
+    - "/home/mattc/data-space/carbonmap-embeddings/dasos-ireland/deepbiomass-model-outputs/Deep Biomass - Aggregated Data & Portfolio Summary.csv"
+    - "/home/mattc/data-space/carbonmap-embeddings/boundary-files/dasos_fgl_2025ye.gpkg"
+  preferred_sources:
+    embeddings: ["AlphaEarth Foundation (AEF) via GEE GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL"]
+    lidar: []                 # GEDI excluded (coverage stops ~51.6N, north of most of Ireland)
+    sar: []                   # PALSAR-2/S1 deferred (plan: optional next arm)
+    optical: []
+    topography: []            # SRTM/topo dropped for Ireland transfer
+    aux: ["Hansen GFC (survey-relative disturbance-timing: dstx_pre_ysd, dstx_pre_loss_5yr, dstx_loss_frac_buf)"]
+    labels: []                # NO ground truth; Deep Biomass is an external reference model, not labels
+  reference_model_outputs: "Deep Biomass aggregated CSV (AGB, Mg/ha native, aggregated to tonnes/Location/year)"
+  training_data_for_encoding_gate: "/home/mattc/data-space/carbonmap-embeddings/training-data/anew_gt_with_eco_info.gpkg + ANEW features parquet (emb_00..63 encoding reference)"
+  database_uri: null
+  data_dir: "/home/mattc/data-space/carbonmap-embeddings"
+  gee:
+    enabled: true
+    cloud_project: "${GCP_PROJECT:-}"
+    service_account: "${EE_SERVICE_ACCOUNT:-}"
+    credentials_path: "${GOOGLE_APPLICATION_CREDENTIALS:-}"
+  huggingface:
+    enabled: true
+    repo_org_or_user: null
+    token_env: "HF_TOKEN"
+  aws:
+    enabled: true
+    profile: "${AWS_PROFILE:-}"
+    region: "${AWS_REGION:-us-west-2}"
+    s3_bucket: "${S3_BUCKET:-}"
+
+preprocessing:
+  cloud_masking: "n/a (annual embeddings already gap-filled)"
+  # Biomass uses annual composites, not crop-calendar windows. Train/test years
+  # must not overlap when years are pooled — see splits.temporal_holdout_rule.
+  temporal_alignment: "annual_composite"
+  resampling_policy: "task_specific"
+  normalization: "fit_on_train_only"
+  leakage_checks_required: true
+  data_versioning_required: true
+
+splits:
+  strategy: "none_zero_shot_transfer"   # WAIVED: no training, no GT; reference is an external model
+  spatial_holdout_unit: null
+  temporal_holdout_rule: null
+  validation_fraction: 0.0
+  test_fraction: 0.0
+  rationale: "Pre-trained head applied zero-shot to all 141 Irish Locations; no train/val/test split applicable."
+
+models:
+  require_simple_baseline: true
+  baseline_candidates: ["deep_biomass_reference (external lower bound)", "structural-covariate sanity predictor"]
+  advanced_candidates: ["models/inference_model_embdstx.txt (pre-trained, 67 feat, target tCO2/acre)"]
+  pretrained_head: "models/inference_model_embdstx.txt"
+  pretrained_features: "models/inference_features_embdstx.json"
+  ensemble_allowed: false
+
+training:
+  budget_tier: "Small"
+  max_full_iterations: 3
+  allow_extended_iterations: false
+  per_actor_retry_limit: 3
+  early_stopping: true
+  save_best_checkpoint: true
+  log_every_n_steps: 50
+
+evaluation:
+  metrics:
+    - "per_location_signed_delta (our_pred - DB) in tCO2/acre"
+    - "per_quintile_signed_bias_Q1_Q5 (by DB magnitude)"
+    - "PRD (predicted-range-discrimination) over Irish range"
+    - "covariate_cuts: stand_age(PlantingYe), Hdom, YC, MainSp, Thinned"
+    - "OOD: Mahalanobis fraction beyond 99th-pct training radius; USA-vs-Ireland domain-classifier AUC"
+    - "saturation: fraction of Locations >80 tCO2/acre and above training max 520.95"
+  thresholds: {}            # no accuracy thresholds (no GT)
+  reference: "Deep Biomass (external model, known under-estimator -> directional lower bound)"
+  success_criteria:
+    - "directional: our_pred >= DB, increasing with biomass band"
+    - "structural-consistency: our_pred rank-tracks age/Hdom/YC sensibly"
+    - "saturation/OOD flags reported"
+  benchmark_range: null
+
+finalisation:
+  save_model_card: true
+  save_data_card: true
+  save_environment_record: true
+  save_git_snapshot: true
+  push_to_huggingface: false
+  mirror_to_s3: false
+  export_gee_assets: false
