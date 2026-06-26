@@ -48,3 +48,6 @@ experiments/**/*.png
 experiments/**/*.html
 experiments/**/*.bak.parquet
 experiments/**/*_run.log
+
+# Loose reference figures — keep local, not in git (output artefacts, per repo convention)
+example-applicability-analysis/

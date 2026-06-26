@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0",
+  "experiment_id": "agb_trust_aoa_20260626",
+  "description": "All 52 ANEW projects in training-codec embedding space (affine-mapped from raw pool). Embeddings only + CO2 + eco + lon/lat. For DI/AOA and overlays.",
+  "encoding": "training_codec",
+  "encoding_note": "raw GEE float pool emb mapped via aef_affine.parquet (emb=a*GEE+c); verified within Temperate Broadleaf (audit corr>=0.95); UNVERIFIED for conifer/boreal/tundra/grassland biomes (no codec anchor) \u2014 see audit/data_audit.md.",
+  "n_rows": 12834,
+  "n_projects": 52,
+  "n_modelled": 4646,
+  "target_column": "CO2",
+  "target_meaning": "CO2 standing stock, tCO2/acre",
+  "id_columns": [
+    "project_name",
+    "plot_id"
+  ],
+  "cv_partition_key": "project_name",
+  "embedding": {
+    "count": 64,
+    "names_pattern": "emb_00..emb_63",
+    "dtype": "float (codec scale)"
+  },
+  "co_features": "none (no-GEE scope; chm/topo/dstx not extracted for the 29 unused projects)"
+}

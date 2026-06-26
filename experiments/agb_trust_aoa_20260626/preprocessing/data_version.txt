@@ -1,0 +1,11 @@
+experiment: agb_trust_aoa_20260626
+artifact: anew_canonical_codec.parquet
+output_path: /home/mattc/data-space/carbonmap-embeddings/agb_trust_aoa_20260626/preprocessing/anew_canonical_codec.parquet
+snapshot_timestamp_utc: 2026-06-26
+inputs:
+  pool_iter1_pool_embeddings_sha256: ec25493e2a5f92ad11766948d3b02dc18d3f010c3b63022d9fd2a44fea0b948f
+  aef_affine_sha256: dca0ddbe9b305a4b1e48af5e87bd1224338a820ba2b3475e6fc620e7509acd41
+  anew_gt_gpkg_sha256: b0e490b7ceb5bd59acd5965fefbe705ffe6707ab140575c9f9c49709b6a7393d
+dropped_duplicate_keys: 3
+rows_without_lonlat: 0
+method: raw pool emb -> per-band affine -> codec; lon/lat join from GT gpkg on (project_name, Plot_ID); modelled flag + region from features_iter3.parquet.
