@@ -58,21 +58,49 @@ spread). So selection is **gap-based**, not a fixed top-K or plot-floor; biome p
   CO₂ stats, biome. Provenance in `preprocessing/{feature_schema.json,data_version.txt}` +
   `final/DATA_STORE.md` (encoding=codec, cv_partition_key=project_name).
 
+## Part 3 — Bake-off (inverts the feature-proximity premise)
+
+Trained an emb-only LightGBM on each candidate set and compared them. **Ireland has no field
+ground-truth and Deep Biomass has known issues, so the verdict rests only on DB-independent,
+real-ANEW-label metrics:** within-set leave-one-project-out CV, and a pseudo-Ireland transfer
+(hold out the closest project, predict its real label). DB is reported as caveated context, never
+as a validity basis.
+
+| set | n proj | n plots | CV R² | pseudo-Ireland RMSE | Ireland median DI | Ireland pred median |
+|---|---|---|---|---|---|---|
+| core | 4 | 787 | 0.05 | 104 | 0.90 | 184 |
+| extended | 9 | 2,072 | 0.05 | 94 | 0.84 | 132 |
+| all_minus_err | 51 | 12,636 | **0.32** | **93** | 0.94 | 135 |
+
+- **The feature-closest `core` is the worst, not the best** — lowest CV R² and worst pseudo-Ireland
+  transfer. Embedding proximity selected the oceanic-conifer projects (Kootznoowoo/RainierGateway,
+  among the highest-biomass US forests); a narrow model on them generalises worst. **Feature
+  proximity ≠ transferable biomass labels.**
+- **`all_minus_err` wins** the DB-independent metrics — more data + broader label range → a flatter,
+  better-calibrated map. If training on US data only, use all of it, not a feature-matched subset.
+- **Ireland is extrapolation regardless of set:** every set leaves Ireland **0% inside its AOA**, and
+  the sets **disagree on the Ireland level** (predictions 135–184 tCO₂/acre; cross-model MAD up to
+  50). Over-prediction tracks stand height (err vs Hdom ρ≈0.7) — a label-domain mismatch (US mature
+  forest vs young Irish plantation, Hdom ~11.5 m) the emb-only model cannot resolve without
+  structural (canopy-height) features. Figure: `figures/bakeoff_ireland_levels.png`.
+
 ## Verification
 
 - Metric robustness reported (centroid ρ 0.95 / Mahalanobis ρ 0.77).
 - Quinte excluded and justified by CO₂ stats; asserted present in `erroneous_excluded`.
 - Core size within bounds (3–8) and its LOPO folds are 1:1 with projects; asserted.
 - Every `extended` project carries a valid spatial fold (≥0); no project spans two folds; asserted.
+- Bake-off verdict is computed on DB-independent metrics only; DB excluded from the decision.
 
-## Limitations / next steps
+## Conclusion / next steps
 
-- **Near-extrapolation, not in-domain.** Even the best cohort is far outside Ireland's feature
-  domain (DI ≈ 2.3+ vs 0.77). A model trained on it should ship with DI/AOA guardrails
-  (see `agb_trust_aoa_20260626`) flagging Ireland predictions as extrapolation.
-- **No CO₂ matching to Ireland** — Ireland has no ground-truth, so biomass was only screened for
-  plausibility, not matched. Acquiring Irish field plots would let us validate, not just select.
-- **emb-only** — selection ignores topo/CHM/dstx because the 29 unused projects and Ireland lack
-  them; a richer selection needs GEE co-feature extraction (deferred).
-- **Next phase:** train + compare the three candidate sets on the designed folds (LOPO RMSE +
-  Ireland AOA-coverage) to pick a winner — this pass deliberately stops at selection + fold design.
+- **Project selection alone cannot make a trustworthy Ireland model.** The closeness ranking
+  (Parts 1–2) correctly finds the *feature* analogues, but the bake-off (Part 3) shows that does not
+  translate to biomass level — and a narrow feature-matched set is *actively worse* than all data.
+- **If a US-only model must ship for Ireland, use `all_minus_err`** (best-calibrated), under DI/AOA
+  guardrails that flag Ireland as out-of-domain (0% inside AOA) — not the `core` set.
+- **The real fix is local:** Irish field calibration plots + structural (canopy-height) features.
+  Until then Ireland predictions are extrapolation, with sets disagreeing by up to ~50 tCO₂/acre.
+- **emb-only caveat:** all candidates lack topo/CHM/dstx (Ireland + 29-unused have no co-features);
+  the missing canopy height is part of the over-prediction. A full-feature redo needs GEE extraction.
+- **Deep Biomass is not a validity anchor** here (known issues); used only for directional context.

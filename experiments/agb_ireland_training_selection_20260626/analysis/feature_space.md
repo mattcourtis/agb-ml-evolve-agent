@@ -80,3 +80,31 @@ Gap cut (step ≥ 0.1 in median DI) → **core = 4 projects, 787 plots**, 2 biom
 
 
 Manifest `preprocessing/selected_projects.parquet`: `in_core` / `in_extended` / `in_all_minus_err` + `core_lopo_fold` + `extended_spatial_fold`.
+
+## Part 3 — Candidate-set bake-off (result inverts the feature-proximity premise)
+
+Emb-only LightGBM per candidate set. **Verdict rests on DB-independent metrics only** — within-set leave-one-project-out CV and the pseudo-Ireland transfer (hold out the closest project, predict it from its real ANEW label). Deep Biomass is shown for context but **NOT used to judge validity** (it has known issues). Ireland itself has no field ground-truth.
+
+|               |   n_projects |   n_plots |   cv_lopo_rmse |   cv_lopo_r2 |   ireland_median_di |   ireland_pred_median |   ireland_vs_db_median_bias |   ireland_vs_db_mae |   ireland_vs_db_spearman |   err_vs_hdom_spearman |   pseudo_ireland_rmse |
+|:--------------|-------------:|----------:|---------------:|-------------:|--------------------:|----------------------:|----------------------------:|--------------------:|-------------------------:|-----------------------:|----------------------:|
+| core          |            4 |       787 |         126.33 |         0.05 |                0.90 |                184.28 |                      159.25 |              159.25 |                     0.38 |                   0.70 |                103.97 |
+| extended      |            9 |      2072 |         106.33 |         0.05 |                0.84 |                132.04 |                      109.67 |              109.67 |                     0.32 |                   0.75 |                 93.58 |
+| all_minus_err |           51 |     12636 |          73.69 |         0.32 |                0.94 |                135.57 |                      104.94 |              104.94 |                     0.28 |                   0.68 |                 92.65 |
+
+
+**Winner on the real-label metrics: `all_minus_err`** — best pseudo-Ireland transfer RMSE (93) and best within-set CV (R² 0.32).
+
+
+**The feature-closest `core` is the WORST, not the best.** It scores worst on both real-label metrics (CV R² 0.05, pseudo-transfer RMSE 104 vs 93). Feature-space proximity selected the oceanic-conifer projects (Kootznoowoo/RainierGateway — among the highest-biomass US forests); a narrow model trained on them generalises worst, even to the Ireland-like held-out project. **Embedding proximity does not imply transferable biomass labels.**
+
+
+**`all_minus_err` wins** on the DB-independent metrics — more data and a broader label range give a flatter, better-calibrated, lower-variance map. If forced to train on US data only, use all of it, not a feature-matched subset.
+
+
+**Ireland is extrapolation regardless of set.** Every set leaves Ireland 0% inside its AOA (median DI 0.90–0.94), and the sets **disagree strongly on the Ireland level** (median predictions 136–184 tCO2/acre; cross-model MAD up to 50) — the signature of unstable out-of-domain prediction, independent of any reference. The over-prediction also tracks stand height (err vs Hdom ρ≈0.7), pointing to a label-domain mismatch (US mature forest vs young Irish plantation) the emb-only model cannot resolve without structural (canopy-height) features.
+
+
+**Bottom line:** project selection alone cannot make a trustworthy Ireland model. Ireland needs local field calibration and structural features; until then treat it as extrapolation under DI/AOA guardrails. The Part 1/2 closeness ranking still correctly identifies the *feature* analogues — it just does not translate to biomass level, and a narrow feature-matched set is actively worse than using all data.
+
+
+Figure: `figures/bakeoff_ireland_levels.png`. Deep Biomass context median ≈ 25 tCO2/acre (unreliable — not a validity basis).
